@@ -2,13 +2,11 @@ import ProjectDescription
 
 let baseSettings = SettingsDictionary()
     .debugInformationFormat(.dwarfWithDsym)
+    .otherLinkerFlags(["-ObjC"])
 let projectSettings = Settings.settings(base: baseSettings)
 
 let project = Project(
     name: "tuist-firebase",
-    packages: [
-        .remote(url: "https://github.com/firebase/firebase-ios-sdk", requirement: .exact("12.3.0"))
-    ],
     settings: projectSettings,
     targets: [
         .target(
@@ -33,7 +31,7 @@ let project = Project(
             scripts: [
                 .post(
                     script: """
-                    ${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run
+                    Tuist/.build/checkouts/firebase-ios-sdk/Crashlytics/run
                     """,
                     name: "Upload Symbols to Crashlytics",
                     inputPaths: [
@@ -46,7 +44,7 @@ let project = Project(
                 )
             ],
             dependencies: [
-                .package(product: "FirebaseCrashlytics")
+                .external(name: "FirebaseCrashlytics")
             ]
         ),
         .target(
