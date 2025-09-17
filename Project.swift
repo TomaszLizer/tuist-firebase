@@ -60,5 +60,17 @@ let project = Project(
             ],
             dependencies: [.target(name: "tuist-firebase")]
         ),
+    ],
+    schemes: [
+        .scheme(
+            name: "Tuist-Firebase-Debug",
+            buildAction: .buildAction(targets: [.target("tuist-firebase")]),
+            runAction: .runAction(
+                configuration: .debug,
+                arguments: .arguments(
+                    launchArguments: [.launchArgument(name: "-FIRDebugEnabled", isEnabled: true)]
+                )
+            ),
+        ),
     ]
 )
